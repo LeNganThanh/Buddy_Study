@@ -1,0 +1,39 @@
+   
+   {% for room in rooms %}
+
+   {% if request.user == room.host %}
+
+    <!--  disable these button for not the use who just logged in -->
+
+   <div>
+        <a href="{% url 'update-room' room.id %}">Edit</a>
+        <a href="{% url 'delete-room' room.id %}">Delete</a>
+    </div> 
+
+    <!-- django will give username out of host -->
+ 
+    <a href="{% url 'user-profile' room.host.id %}">@{{ room.host.username }}</a>
+
+    <!-- put in if block to be sure if the user is exist -->
+   
+   {% endif %}
+   
+    <h3>
+        {{ room.id }} --<a href="{% url 'room' room.id %}">  {{ room.name }}</a>-->
+        <!-- <a href="/room/{{ room.id }}"> this code is fixed with room root if the room change then it is not working
+            code above is reference to the name which is defined in urls -
+    </h3>
+    <small>{{ room.topic.name }}</small>
+    <hr>
+
+{% endfor %}
+
+
+views.py
+
+update-room
+  if request.method == "POST":
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
